@@ -6,13 +6,22 @@ const app = express()
 const port = 3333
 
 app.use(cors())
+app.use(express.json())
 
-//Get, POST, PUT, PATCH, DELETE
+//GET, POST, PUT, PATCH, DELETE
 //CRUD -> Create, READ, UPDATE, DELETE
 
 app.get("/", (request, response) => {
   response.json(persons)
-}) // ← essa chave fecha a função corretamente!
+})
+
+app.post("/cadastrar", (request, response) => {
+  const { name, email, age, nickname, password } = request.body.user
+
+  console.log(`${name}, ${email}, ${age}, ${nickname}, ${password}`)
+
+  response.status(201).json({ message: "Usuário cadastrado com sucesso!" })
+})
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta: ${port}!`)
