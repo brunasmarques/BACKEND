@@ -5,7 +5,10 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST } = process.env
+const { 
+  DB_NAME, DB_USER, DB_PASSWORD, DB_HOST 
+
+} = process.env
 
 const app = express()
 const port = 3333
