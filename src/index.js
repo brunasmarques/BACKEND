@@ -5,10 +5,7 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const { 
-  DB_NAME, DB_USER, DB_PASSWORD, DB_HOST 
-
-} = process.env
+const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST } = process.env
 
 const app = express()
 const port = 3333
@@ -25,9 +22,7 @@ const database = mysql.createPool({
 })
 
 app.get("/", (request, response) => {
-  const selectCommand =
-  "SELECT name, email, age, nickname FROM brunamarques_02ta"
-
+  const selectCommand = "SELECT name, email, age, nickname FROM brunamarques_02ta"
   
   database.query(selectCommand, (error, users) => {
     if (error) {
@@ -35,6 +30,29 @@ app.get("/", (request, response) => {
       return response.status(500).json({ error: "Erro no banco de dados" })
     }
     response.json(users)
+  })
+})
+
+app.post("/login", (request, response) => {
+   const{ email, password } = request.body.user
+
+  const selectCommand = "SELECT * FROM brunamarques_02ta WHERE email = ?"
+
+  database.query(selectCommand, [email], (error, user) => {
+    if (error) {
+      console.log(error)
+      return
+    }
+
+    if (user.length === 0 || user[0].password !== password) {
+      response.json({ message: "Email ou senha incorretos!" })
+      return
+    }
+
+    response.json({
+      id: user[0].id,
+      name: user[0].name
+    })
   })
 })
 
